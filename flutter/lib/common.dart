@@ -27,6 +27,8 @@ import 'package:window_size/window_size.dart' as window_size;
 
 import '../consts.dart';
 import 'common/widgets/overlay.dart';
+import 'common/widgets/login.dart';
+
 import 'mobile/pages/file_manager_page.dart';
 import 'mobile/pages/remote_page.dart';
 import 'desktop/pages/remote_page.dart' as desktop_remote;
@@ -2315,6 +2317,17 @@ connect(BuildContext context, String id,
     bool forceRelay = false,
     String? password,
     bool? isSharedPassword}) async {
+
+  // Check login status first
+  if (!gFFI.userModel.isLogin) {
+    // Show login dialog and wait for result
+    final bool loggedIn = await loginDialog();
+    if (!loggedIn) {
+      // If login failed/cancelled, abort connection
+      return false;
+    }
+  }    
+
   if (id == '') return;
   if (!isDesktop || desktopType == DesktopType.main) {
     try {

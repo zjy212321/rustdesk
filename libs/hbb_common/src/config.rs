@@ -717,7 +717,8 @@ impl Config {
     }
 
     pub fn get_rendezvous_server() -> String {
-        let mut rendezvous_server = EXE_RENDEZVOUS_SERVER.read().unwrap().clone();
+        // let mut rendezvous_server = EXE_RENDEZVOUS_SERVER.read().unwrap().clone();
+        let mut rendezvous_server = String::new();
         if rendezvous_server.is_empty() {
             rendezvous_server = Self::get_option("custom-rendezvous-server");
         }
@@ -740,10 +741,10 @@ impl Config {
     }
 
     pub fn get_rendezvous_servers() -> Vec<String> {
-        let s = EXE_RENDEZVOUS_SERVER.read().unwrap().clone();
-        if !s.is_empty() {
-            return vec![s];
-        }
+        // let s = EXE_RENDEZVOUS_SERVER.read().unwrap().clone();
+        // if !s.is_empty() {
+        //     return vec![s];
+        // }
         let s = Self::get_option("custom-rendezvous-server");
         if !s.is_empty() {
             return vec![s];

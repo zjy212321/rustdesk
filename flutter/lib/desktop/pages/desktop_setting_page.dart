@@ -1361,7 +1361,7 @@ class _NetworkState extends State<_Network> with AutomaticKeepAliveClientMixin {
               AbsorbPointer(
                 absorbing: locked,
                 child: Column(children: [
-                  if (!hideServer) server(enabled),
+                  // if (!hideServer) server(enabled),
                   if (!hideProxy)
                     _Card(title: 'Proxy', children: [
                       _Button('Socks5/Http(s) Proxy', changeSocks5Proxy,
@@ -1865,7 +1865,7 @@ class _AboutState extends State<_About> {
           child: SingleChildScrollView(
             controller: scrollController,
             physics: DraggableNeverScrollableScrollPhysics(),
-            child: _Card(title: translate('About RustDesk'), children: [
+            child: _Card(title: translate('About UrekaGoDesk'), children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -1878,25 +1878,25 @@ class _AboutState extends State<_About> {
                   SelectionArea(
                       child: Text('${translate('Build Date')}: $buildDate')
                           .marginSymmetric(vertical: 4.0)),
-                  SelectionArea(
-                      child: Text('${translate('Fingerprint')}: $fingerprint')
-                          .marginSymmetric(vertical: 4.0)),
-                  InkWell(
-                      onTap: () {
-                        launchUrlString('https://rustdesk.com/privacy.html');
-                      },
-                      child: Text(
-                        translate('Privacy Statement'),
-                        style: linkStyle,
-                      ).marginSymmetric(vertical: 4.0)),
-                  InkWell(
-                      onTap: () {
-                        launchUrlString('https://rustdesk.com');
-                      },
-                      child: Text(
-                        translate('Website'),
-                        style: linkStyle,
-                      ).marginSymmetric(vertical: 4.0)),
+                  // SelectionArea(
+                  //     child: Text('${translate('Fingerprint')}: $fingerprint')
+                  //         .marginSymmetric(vertical: 4.0)),
+                  // InkWell(
+                  //     onTap: () {
+                  //       launchUrlString('https://rustdesk.com/privacy.html');
+                  //     },
+                  //     child: Text(
+                  //       translate('Privacy Statement'),
+                  //       style: linkStyle,
+                  //     ).marginSymmetric(vertical: 4.0)),
+                  // InkWell(
+                  //     onTap: () {
+                  //       launchUrlString('https://rustdesk.com');
+                  //     },
+                  //     child: Text(
+                  //       translate('Website'),
+                  //       style: linkStyle,
+                  //     ).marginSymmetric(vertical: 4.0)),
                   Container(
                     decoration: const BoxDecoration(color: Color(0xFF2c8cff)),
                     padding:
