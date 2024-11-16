@@ -2321,7 +2321,9 @@ connect(BuildContext context, String id,
   // Check login status first
   if (!gFFI.userModel.isLogin) {
     // Show login dialog and wait for result
-    final bool loggedIn = await loginDialog();
+    // final bool loggedIn = await loginDialog();
+    final bool? resultLg = await loginDialog(); 
+    final bool loggedIn = resultLg ?? false;
     if (!loggedIn) {
       // If login failed/cancelled, abort connection
       return false;
