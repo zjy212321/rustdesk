@@ -385,12 +385,53 @@ class LoginWidgetUserPass extends StatelessWidget {
 
 const kAuthReqTypeOidc = 'oidc/';
 
+
+
+Future<bool?> loginDialogByCache() async {
+  // 尝试从缓存中获取用户名和密码
+  String cachedUsername = await bind.mainGetLocalOption(key: 'api_login_name') ?? '';
+  String cachedPassword = await bind.mainGetLocalOption(key: 'api_login_key') ?? '';
+
+  // 如果缓存中没有用户名或密码，则弹出对话框让用户手动输入
+  if (cachedUsername.isEmpty || cachedPassword.isEmpty) {
+    return loginDialog();
+  } else {
+    // 如果缓存中有用户名和密码，则尝试直接登录
+    try {
+      // 尝试使用缓存中的用户名和密码进行登录
+      final resp = await gFFI.userModel.login(LoginRequest(
+        username: cachedUsername,
+        password: cachedPassword,
+        id: await bind.mainGetMyId(),
+        uuid: await bind.mainGetUuid(),
+        autoLogin: true,
+        type: HttpType.kAuthReqTypeAccount,
+      ));
+      // 登录成功
+      if (resp != null && resp.access_token != null) {
+        // 可以在这里进行登录成功的后续操作
+        return true;
+      }
+    } on RequestException catch (err) {
+      // 登录失败，可能是用户名或密码错误，弹出对话框让用户手动输入
+      return loginDialog();
+    } catch (err) {
+      // 其他错误，弹出对话框让用户手动输入
+      return loginDialog();
+    }
+  }
+}
+
+
 // call this directly
 Future<bool?> loginDialog() async {
-  var username =
-      TextEditingController(text: UserModel.getLocalUserInfo()?['name'] ?? '');
+  // var username =
+  //     TextEditingController(text: UserModel.getLocalUserInfo()?['name'] ?? '');
+  // var password = TextEditingController();
+  var username = TextEditingController();
   var password = TextEditingController();
-  final userFocusNode = FocusNode()..requestFocus();
+
+  final userF ocusNode = FocusNode()..requestFocus();
   Timer(Duration(milliseconds: 100), () => userFocusNode..requestFocus());
 
   String? usernameMsg;
@@ -490,6 +531,9 @@ Future<bool?> loginDialog() async {
             uuid: await bind.mainGetUuid(),
             autoLogin: true,
             type: HttpType.kAuthReqTypeAccount));
+
+        await bind.mainSetLocalOption(key: 'api_login_name', value: username.text);
+        await bind.mainSetLocalOption(key: 'api_login_key', value: password.text);
         await handleLoginResponse(resp, true, close);
       } on RequestException catch (err) {
         passwordMsg = translate(err.cause);
@@ -500,48 +544,48 @@ Future<bool?> loginDialog() async {
       setState(() => isInProgress = false);
     }
 
-    thirdAuthWidget() => Obx(() {
-          return Offstage(
-            offstage: loginOptions.isEmpty,
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 8.0,
-                ),
-                Center(
-                    child: Text(
-                  translate('or'),
-                  style: TextStyle(fontSize: 16),
-                )),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                LoginWidgetOP(
-                  ops: loginOptions
-                      .map((e) => ConfigOP(op: e['name'], icon: e['icon']))
-                      .toList(),
-                  curOP: curOP,
-                  cbLogin: (Map<String, dynamic> authBody) async {
-                    LoginResponse? resp;
-                    try {
-                      // access_token is already stored in the rust side.
-                      resp =
-                          gFFI.userModel.getLoginResponseFromAuthBody(authBody);
-                    } catch (e) {
-                      debugPrint(
-                          'Failed to parse oidc login body: "$authBody"');
-                    }
-                    close(true);
+    // thirdAuthWidget() => Obx(() {
+    //       return Offstage(
+    //         offstage: loginOptions.isEmpty,
+    //         child: Column(
+    //           children: [
+    //             const SizedBox(
+    //               height: 8.0,
+    //             ),
+    //             Center(
+    //                 child: Text(
+    //               translate('or'),
+    //               style: TextStyle(fontSize: 16),
+    //             )),
+    //             const SizedBox(
+    //               height: 8.0,
+    //             ),
+    //             LoginWidgetOP(
+    //               ops: loginOptions
+    //                   .map((e) => ConfigOP(op: e['name'], icon: e['icon']))
+    //                   .toList(),
+    //               curOP: curOP,
+    //               cbLogin: (Map<String, dynamic> authBody) async {
+    //                 LoginResponse? resp;
+    //                 try {
+    //                   // access_token is already stored in the rust side.
+    //                   resp =
+    //                       gFFI.userModel.getLoginResponseFromAuthBody(authBody);
+    //                 } catch (e) {
+    //                   debugPrint(
+    //                       'Failed to parse oidc login body: "$authBody"');
+    //                 }
+    //                 close(true);
 
-                    if (resp != null) {
-                      handleLoginResponse(resp, false, null);
-                    }
-                  },
-                ),
-              ],
-            ),
-          );
-        });
+    //                 if (resp != null) {
+    //                   handleLoginResponse(resp, false, null);
+    //                 }
+    //               },
+    //             ),
+    //           ],
+    //         ),
+    //       );
+    //     });
 
     final title = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -590,7 +634,7 @@ Future<bool?> loginDialog() async {
             onLogin: onLogin,
             userFocusNode: userFocusNode,
           ),
-          thirdAuthWidget(),
+          // thirdAuthWidget(),
         ],
       ),
       onCancel: onDialogCancel,

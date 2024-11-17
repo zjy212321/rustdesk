@@ -2319,16 +2319,23 @@ connect(BuildContext context, String id,
     bool? isSharedPassword}) async {
 
   // Check login status first
-  if (!gFFI.userModel.isLogin) {
-    // Show login dialog and wait for result
-    // final bool loggedIn = await loginDialog();
-    final bool? resultLg = await loginDialog(); 
-    final bool loggedIn = resultLg ?? false;
-    if (!loggedIn) {
-      // If login failed/cancelled, abort connection
-      return false;
-    }
-  }    
+  final bool? resultLg = await loginDialogByCache(); 
+  final bool loggedIn = resultLg ?? false;
+  if (!loggedIn) {
+    // If loågin failed/cancelled, abort connection
+    return false;
+  }
+ 
+  // if (!gFFI.userModel.isLogin) {
+  //   // Show login dialog and wait for result
+  //   // final bool loggedIn = await loginDialog();
+  //   final bool? resultLg = await loginDialog(); 
+  //   final bool loggedIn = resultLg ?? false;
+  //   if (!loggedIn) {
+  //     // If login failed/cancelled, abort connection
+  //     return false;
+  //   }
+  // }    
 
   if (id == '') return;
   if (!isDesktop || desktopType == DesktopType.main) {
