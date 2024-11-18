@@ -431,7 +431,7 @@ Future<bool?> loginDialog() async {
   var username = TextEditingController();
   var password = TextEditingController();
 
-  final userF ocusNode = FocusNode()..requestFocus();
+  final userFocusNode = FocusNode()..requestFocus();
   Timer(Duration(milliseconds: 100), () => userFocusNode..requestFocus());
 
   String? usernameMsg;
