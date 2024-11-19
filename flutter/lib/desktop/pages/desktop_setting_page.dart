@@ -1908,15 +1908,13 @@ class _AboutState extends State<_About> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Text(
-                              //   'Copyright © ${DateTime.now().toString().substring(0, 4)} Yueting Ltd.\n$license',
-                              //   style: const TextStyle(color: Colors.white),
-                              // ),
                               Text(
-                                translate('Slogan_tip'),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    color: Colors.white),
+                                'Copyright © ${DateTime.now().toString().substring(0, 4)} Purslane Ltd.\n$license',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                'If you want to know the details about the software code, please send an email to zjy212321@gmail.com.',
+                                style: TextStyle(color: Colors.white),
                               )
                             ],
                           ),
