@@ -1931,7 +1931,7 @@ class _AboutState extends State<_About> {
 }
 
 //#endregion
-
+  
 //#region components
 
 // ignore: non_constant_identifier_names
