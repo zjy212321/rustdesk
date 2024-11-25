@@ -671,7 +671,7 @@ jobs:
         run: |
           # brew unlink pkg-config@0.29.2
           # brew install llvm create-dmg nasm cmake gcc wget ninja pkg-config
-          brew uninstall pkg-config && brew install llvm create-dmg nasm cmake gcc wget ninja pkg-config && brew link --overwrite llvm create-dmg nasm cmake gcc wget ninja pkg-config
+          brew reinstall llvm create-dmg nasm cmake gcc wget ninja pkg-config && brew link --overwrite llvm create-dmg nasm cmake gcc wget ninja pkg-config
 
       - name: Install flutter
         uses: subosito/flutter-action@v2
