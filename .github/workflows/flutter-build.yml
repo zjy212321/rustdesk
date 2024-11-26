@@ -670,7 +670,8 @@ jobs:
       - name: Install build runtime
         run: |
           if [ "${{ matrix.job.arch }}" == "aarch64" ]; then
-            brew install llvm create-dmg nasm cmake gcc wget ninja pkg-config && brew unlink pkg-config@0.29.2 && brew link --overwrite llvm create-dmg nasm cmake gcc wget ninja pkg-config
+            # brew install llvm create-dmg nasm cmake gcc wget ninja pkg-config && brew unlink pkg-config@0.29.2 && brew link --overwrite llvm create-dmg nasm cmake gcc wget ninja pkg-config
+            brew install llvm create-dmg nasm cmake gcc wget ninja pkg-config
           else
             brew install llvm create-dmg nasm cmake gcc wget ninja pkg-config
           fi
