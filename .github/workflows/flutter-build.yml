@@ -673,7 +673,7 @@ jobs:
             echo "Unlinking existing pkg-config..."
             brew unlink pkg-config
           fi
-          brew install llvm create-dmg nasm cmake gcc wget ninja pkg-config
+          brew install llvm create-dmg nasm cmake gcc wget ninja pkg-config && brew link pkgconf
 
       - name: Install flutter
         uses: subosito/flutter-action@v2
@@ -769,17 +769,32 @@ jobs:
           security unlock-keychain -p ${{ secrets.MACOS_P12_PASSWORD }} rustdesk.keychain
           # security unlock-keychain -p ${{ secrets.MACOS_KEYCHAIN_PASSWORD }} rustdesk.keychain
           # start sign the rustdesk.app and dmg
+          # rm -rf *.dmg || true
+          # codesign --force --options runtime -s ${{ secrets.MACOS_CODESIGN_IDENTITY }} --deep --strict ./flutter/build/macos/Build/Products/Release/RustDesk.app -vvv
+          # create-dmg --icon "RustDesk.app" 200 190 --hide-extension "RustDesk.app" --window-size 800 400 --app-drop-link 600 185 rustdesk-${{ env.VERSION }}.dmg ./flutter/build/macos/Build/Products/Release/RustDesk.app
+          # codesign --force --options runtime -s ${{ secrets.MACOS_CODESIGN_IDENTITY }} --deep --strict rustdesk-${{ env.VERSION }}.dmg -vvv
+          # # notarize the rustdesk-${{ env.VERSION }}.dmg
+          # rcodesign notary-submit --api-key-path ${{ github.workspace }}/rustdesk.json  --staple rustdesk-${{ env.VERSION }}.dmg
+          
+          # Rename the RustDesk.app to UrekaGoDesk.app for packaging
+          mv ./flutter/build/macos/Build/Products/Release/RustDesk.app ./flutter/build/macos/Build/Products/Release/UrekaGoDesk.app
+          # Sign the UrekaGoDesk.app
+          codesign --force --options runtime -s ${{ secrets.MACOS_CODESIGN_IDENTITY }} --deep --strict ./flutter/build/macos/Build/Products/Release/UrekaGoDesk.app -vvv
+          # Create DMG with new name
           rm -rf *.dmg || true
-          codesign --force --options runtime -s ${{ secrets.MACOS_CODESIGN_IDENTITY }} --deep --strict ./flutter/build/macos/Build/Products/Release/RustDesk.app -vvv
-          create-dmg --icon "RustDesk.app" 200 190 --hide-extension "RustDesk.app" --window-size 800 400 --app-drop-link 600 185 rustdesk-${{ env.VERSION }}.dmg ./flutter/build/macos/Build/Products/Release/RustDesk.app
-          codesign --force --options runtime -s ${{ secrets.MACOS_CODESIGN_IDENTITY }} --deep --strict rustdesk-${{ env.VERSION }}.dmg -vvv
-          # notarize the rustdesk-${{ env.VERSION }}.dmg
-          rcodesign notary-submit --api-key-path ${{ github.workspace }}/rustdesk.json  --staple rustdesk-${{ env.VERSION }}.dmg
+          create-dmg --icon "UrekaGoDesk.app" 200 190 --hide-extension "UrekaGoDesk.app" --window-size 800 400 --app-drop-link 600 185 urekagodesk-${{ env.VERSION }}.dmg ./flutter/build/macos/Build/Products/Release/UrekaGoDesk.app
+          # Sign the DMG
+          codesign --force --options runtime -s ${{ secrets.MACOS_CODESIGN_IDENTITY }} --deep --strict urekagodesk-${{ env.VERSION }}.dmg -vvv
+          # Notarize the DMG
+          rcodesign notary-submit --api-key-path ${{ github.workspace }}/rustdesk.json  --staple urekagodesk-${{ env.VERSION }}.dmg
 
       - name: Rename rustdesk
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
-          for name in rustdesk*??.dmg; do
+          # for name in rustdesk*??.dmg; do
+          #     mv "$name" "${name%%.dmg}-${{ matrix.job.arch }}.dmg"
+          # done
+          for name in urekagodesk*??.dmg; do
               mv "$name" "${name%%.dmg}-${{ matrix.job.arch }}.dmg"
           done
 
@@ -790,7 +805,8 @@ jobs:
           prerelease: true
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            rustdesk*-${{ matrix.job.arch }}.dmg
+            # rustdesk*-${{ matrix.job.arch }}.dmg
+            urekagodesk*-${{ matrix.job.arch }}.dmg
 
   # publish_unsigned:
   #   needs:
