@@ -212,10 +212,10 @@ jobs:
           python preprocess.py --arp -d ../../rustdesk
           nuget restore msi.sln
           msbuild msi.sln -p:Configuration=Release -p:Platform=x64 /p:TargetVersion=Windows10
-          # mv ./Package/bin/x64/Release/en-us/Package.msi ../../SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
-          # sha256sum ../../SignOutput/rustdesk-*.msi
-          mv ./Package/bin/x64/Release/en-us/Package.msi ../../SignOutput/urekagodesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
-          sha256sum ../../SignOutput/urekagodesk-*.msi
+          mv ./Package/bin/x64/Release/en-us/Package.msi ../../SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
+          sha256sum ../../SignOutput/rustdesk-*.msi
+          # mv ./Package/bin/x64/Release/en-us/Package.msi ../../SignOutput/urekagodesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
+          # sha256sum ../../SignOutput/urekagodesk-*.msi
 
       - name: Sign rustdesk self-extracted file
         if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != ''
@@ -230,9 +230,9 @@ jobs:
           prerelease: true
           tag_name: ${{ env.TAG_NAME }}
           files: |
-            # ./SignOutput/rustdesk-*.msi
+            ./SignOutput/rustdesk-*.msi
             # ./SignOutput/rustdesk-*.exe
-            ./SignOutput/urekagodesk-*.msi  # 修改这里
+            # ./SignOutput/urekagodesk-*.msi  # 修改这里
             ./SignOutput/urekagodesk-*.exe 
 
   # # The fallback for the flutter version, we use Sciter for 32bit Windows.
