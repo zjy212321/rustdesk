@@ -405,7 +405,7 @@ def build_flutter_dmg(version, features):
     '''
     system2(
         "create-dmg --volname \"RustDesk Installer\" --window-pos 200 120 --window-size 800 400 --icon-size 100 --app-drop-link 600 185 --icon RustDesk.app 200 190 --hide-extension RustDesk.app rustdesk.dmg ./build/macos/Build/Products/Release/RustDesk.app")
-    os.rename("rustdesk.dmg", f"../rustdesk-{version}.dmg")
+    os.rename("rustdesk.dmg", f"../urekagodesk-{version}.dmg")
     '''
     os.chdir("..")
 
@@ -570,7 +570,7 @@ def main():
                 system2(
                     'create-dmg "RustDesk %s.dmg" "target/release/bundle/osx/RustDesk.app"' % version)
                 os.rename('RustDesk %s.dmg' %
-                          version, 'rustdesk-%s.dmg' % version)
+                          version, 'urekagodesk-%s.dmg' % version)
                 if pa:
                     system2('''
     # https://pyoxidizer.readthedocs.io/en/apple-codesign-0.14.0/apple_codesign.html

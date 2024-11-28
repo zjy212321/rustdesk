@@ -171,36 +171,37 @@ class _InstallPageBodyState extends State<_InstallPageBody>
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: Colors.grey),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.info_outline_rounded, size: 32)
-                          .marginOnly(right: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(translate('agreement_tip'))
-                              .marginOnly(bottom: em),
-                          InkWell(
-                            hoverColor: Colors.transparent,
-                            onTap: () => launchUrlString(
-                                'https://rustdesk.com/privacy.html'),
-                            child: Tooltip(
-                              message: 'https://rustdesk.com/privacy.html',
-                              child: Row(children: [
-                                Icon(Icons.launch_outlined, size: 16)
-                                    .marginOnly(right: 5),
-                                Text(
-                                  translate('End-user license agreement'),
-                                  style: const TextStyle(
-                                      decoration: TextDecoration.underline),
-                                )
-                              ]),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  )).marginSymmetric(vertical: 2 * em),
+                  // child: Row(
+                  //   children: [
+                  //     Icon(Icons.info_outline_rounded, size: 32)
+                  //         .marginOnly(right: 16),
+                  //     Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         Text(translate('agreement_tip'))
+                  //             .marginOnly(bottom: em),
+                  //         InkWell(
+                  //           hoverColor: Colors.transparent,
+                  //           onTap: () => launchUrlString(
+                  //               'https://rustdesk.com/privacy.html'),
+                  //           child: Tooltip(
+                  //             message: 'https://rustdesk.com/privacy.html',
+                  //             child: Row(children: [
+                  //               Icon(Icons.launch_outlined, size: 16)
+                  //                   .marginOnly(right: 5),
+                  //               Text(
+                  //                 translate('End-user license agreement'),
+                  //                 style: const TextStyle(
+                  //                     decoration: TextDecoration.underline),
+                  //               )
+                  //             ]),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     )
+                  //   ],
+                  // )
+              ).marginSymmetric(vertical: 2 * em),
               Row(
                 children: [
                   Expanded(
@@ -263,7 +264,8 @@ class _InstallPageBodyState extends State<_InstallPageBody>
     String? install_path = await FilePicker.platform
         .getDirectoryPath(initialDirectory: controller.text);
     if (install_path != null) {
-      controller.text = join(install_path, await bind.mainGetAppName());
+      // controller.text = join(install_path, await bind.mainGetAppName());
+      controller.text = install_path;
     }
   }
 }
