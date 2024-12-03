@@ -3348,7 +3348,7 @@ Widget loadPowered(BuildContext context) {
     cursor: SystemMouseCursors.click,
     child: GestureDetector(
       onTap: () {
-        launchUrl(Uri.parse('https://urekagodesk.tech'));
+        launchUrl(Uri.parse('https://www.google.cn'));
       },
       child: Opacity(
           opacity: 0.5,
